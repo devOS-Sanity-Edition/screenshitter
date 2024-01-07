@@ -1,4 +1,4 @@
-FROM gradle:8.5.0-jdk21-alpine as TEMP_BUILD_IMAGE
+FROM gradle:8.5.0-jdk21 as TEMP_BUILD_IMAGE
 
 ENV APP_BUILD=/usr/app
 WORKDIR $APP_BUILD
