@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  selenium:
+    image: selenium/standalone-chrome
+    shm_size: 2gb
+    environment:
+      SE_SCREEN_WIDTH: 2880
+      SE_SCREEN_HEIGHT: 1800
+      SE_SCREEN_DEPTH: 24
+      SE_SCREEN_DPI: 220
+    ports:
+      - "4444:4444"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4444/wd/hub/status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  screenshitter:
+    image: ghcr.io/devos-sanity-edition/screenshitter:main
+    depends_on:
+      selenium:
+        condition: service_healthy
+    environment:
+      USE_REMOTE: true
+      REMOTE_URL: "http://selenium:4444/wd/hub"
+      BOT_TOKEN: ""
+      USER_TOKEN: ""
